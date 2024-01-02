@@ -1,6 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import axios from 'axios';
+import { useDarkMode } from '../DarkModeContext/DarkModeContext';
+import { useNavigate  } from 'react-router-dom';
+
 
 type DetailProps = {
     id: string;
@@ -14,7 +17,14 @@ type DetailProps = {
 const Detail: React.FC = () => {
     const { id } = useParams<DetailProps>();
     const [detail, setDetail] = useState<DetailProps | null>(null);
+    const { darkMode, toggleDarkMode } = useDarkMode();
 
+    const navigate = useNavigate();
+
+    const goBack = () => {
+      navigate(-1);
+    };
+    
     useEffect(() => {
         fetchData();
     }, [id]);
@@ -31,9 +41,12 @@ const Detail: React.FC = () => {
 
 
     return (
-        <div className="container mt-4">
+        <div className="container mt-4 full-height">
             <h2 className="mb-4">Wine Detail</h2>
-            <table className="table">
+            <button className='mb-4 rounded' onClick={goBack}>
+                ⬅ Back
+            </button>
+            <table className={`table ${darkMode ? 'table-dark' : ''}`}>
                 <tbody>
                     <tr>
                         <th>ID:</th>

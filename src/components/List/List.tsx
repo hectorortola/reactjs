@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
-import './styles.css';
+import { useDarkMode } from '../DarkModeContext/DarkModeContext';
 
 interface WineItem {
     id: number;
@@ -17,6 +17,7 @@ interface WineItem {
 
 const List: React.FC = () => {
     const [data, setData] = useState<WineItem[]>([]);
+    const { darkMode, toggleDarkMode } = useDarkMode();
 
     useEffect(() => {
         fetchData();
@@ -30,10 +31,10 @@ const List: React.FC = () => {
 
     return (
         <div>
-            <div className="container mt-4">
-                <h2>List</h2>
+            <div className={`container mt-4 ${darkMode ? 'table-dark' : ''}`}>
+                <h2 className='mb-4'>List</h2>
                 
-                <table className="table">
+                <table className={`table ${darkMode ? 'table-dark' : ''}`}>
                     <thead>
                         <tr>
                             <th>ID</th>

@@ -1,25 +1,24 @@
-import React, {useState} from 'react';
+import React from 'react';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 
 import List from './components/List/List';
 import WineDetail from './components/WineDetail/WineDetail';
+import { useDarkMode } from './components/DarkModeContext/DarkModeContext';
+
 import './App.css';
 
 const App: React.FC = () => {
 
-	const [isDarkMode, setIsDarkMode] = useState<boolean>(false);
-
-  	const toggleDarkMode = () => {
-    	setIsDarkMode((prevMode) => !prevMode);
-  	};
-
+	const { darkMode, toggleDarkMode } = useDarkMode();
+	
 	return (
-		<div className={`App ${isDarkMode ? 'dark-mode' : ''}`}>
-		<header className="App-header">
-		<button onClick={toggleDarkMode}>
-          {isDarkMode ? 'Switch to Light Mode' : 'Switch to Dark Mode'}
-        </button>
-		</header>
+		<div className={`App ${darkMode ? 'dark-mode' : ''}`}>
+			<header className="App-header">
+				<button className={`button ${darkMode ? 'dark-mode' : ''}`} onClick={toggleDarkMode}>
+				{darkMode ? '🌞' : '🌜'}
+				</button>
+			</header>
+
 			<Router>
 				<div>
 					<Routes>

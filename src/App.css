@@ -2,14 +2,22 @@
     padding: 20px;
     transition: background-color 0.3s ease;
 }
-
 .App.dark-mode {
     background-color: #333;
     color: #fff;
 }
 
-button {
-    font-size: 16px;
+.button {
+    font-size: 25px;
     padding: 10px;
     margin-top: 20px;
+    background-color: #333;
+    border-radius: 25px;
+}
+.button.dark-mode {
+    background-color: #fff;
+}
+
+.full-height{
+  min-height: 100vh;
 }
