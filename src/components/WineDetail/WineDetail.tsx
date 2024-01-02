@@ -1,9 +1,10 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect} from 'react';
 import { useParams } from 'react-router-dom';
-import axios from 'axios';
 import { useDarkMode } from '../DarkModeContext/DarkModeContext';
 import { useNavigate  } from 'react-router-dom';
-
+import { useDispatch, useSelector } from 'react-redux';
+import { setItemData } from '../../redux/slice';
+import { RootState } from '../../redux/store';
 
 type DetailProps = {
     id: string;
@@ -13,12 +14,11 @@ type DetailProps = {
     image: string;
 }
 
-
 const Detail: React.FC = () => {
     const { id } = useParams<DetailProps>();
-    const [detail, setDetail] = useState<DetailProps | null>(null);
-    const { darkMode, toggleDarkMode } = useDarkMode();
-
+    const dispatch = useDispatch();
+    const detail = useSelector((state: RootState) => state.app.itemData);
+    const {darkMode} = useDarkMode();
     const navigate = useNavigate();
 
     const goBack = () => {
@@ -29,19 +29,17 @@ const Detail: React.FC = () => {
         fetchData();
     }, [id]);
 
-    const fetchData = () => {
-        axios.get<DetailProps>(`https://api.sampleapis.com/wines/reds/${id}`)
-            .then(response => setDetail(response.data))
-            .catch(error => console.error('Error fetching detail data:', error));
-    };
 
-    if (!detail) {
-        return <div>Loading...</div>;
-    }
+    const fetchData = async () => {
+        const response = await fetch(`https://api.sampleapis.com/wines/reds/${id}`);
+        const data = await response.json();
+        dispatch(setItemData(data));
+    };
 
 
     return (
-        <div className="container mt-4 full-height">
+        <div>
+            { detail ? ( <div className="container mt-4 full-height">
             <h2 className="mb-4">Wine Detail</h2>
             <button className='mb-4 rounded' onClick={goBack}>
                 ⬅ Back
@@ -68,7 +66,11 @@ const Detail: React.FC = () => {
                     </tr>
                 </tbody>
             </table>
+        </div>) : (
+            <div className='loader'>Loading...</div>
+        )}
         </div>
+       
     );
 
 };
